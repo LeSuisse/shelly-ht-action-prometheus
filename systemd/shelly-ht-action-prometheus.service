@@ -1,0 +1,31 @@
+[Unit]
+Description=Shelly H&t action Prometheus
+After=network.target network-online.target
+Requires=network-online.target
+
+[Service]
+Environment=SENSOR_PASSWORD=change_me
+Environment=ADDRESS_METRICS=127.0.0.1:17795
+Environment=ADDRESS_SENSOR=127.0.0.1:17796
+ExecStart=/usr/local/bin/shelly-ht-action-prometheus
+DynamicUser=yes
+PrivateUsers=yes
+PrivateDevices=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=read-only
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectHostname=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictRealtime=yes
+CapabilityBoundingSet=
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+UMask=0777
+
+[Install]
+WantedBy=multi-user.target

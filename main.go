@@ -8,6 +8,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
 	"net/http"
+	"os"
 )
 
 const SensorName = "name"
@@ -15,11 +16,25 @@ const SensorName = "name"
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 
-	router := gin.Default()
-	router.GET("/sensors/:sensor_name", sensorAction)
-	router.GET("/metrics", promHandler(promhttp.Handler()))
+	routerSensor := gin.Default()
+	routerSensor.Use(gin.BasicAuth(gin.Accounts{"sensor": getEnv("SENSOR_PASSWORD")}))
+	routerSensor.GET("/sensors/:sensor_name", sensorAction)
 
-	log.Fatal(router.Run(":14380"))
+	routerMetrics := gin.Default()
+	routerMetrics.GET("/metrics", promHandler(promhttp.Handler()))
+	go func() {
+		log.Fatal(routerMetrics.Run(getEnv("ADDRESS_METRICS")))
+	}()
+
+	log.Fatal(routerSensor.Run(getEnv("ADDRESS_SENSOR")))
+}
+
+func getEnv(name string) string {
+	value, exist := os.LookupEnv(name)
+	if !exist {
+		log.Fatalf("%s environnement variable is missing\n", value)
+	}
+	return value
 }
 
 var (

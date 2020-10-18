@@ -22,6 +22,9 @@ $> SENSOR_PASSWORD=<passphrase_to_submit_sensor_data> \
    shelly-ht-action-prometheus
 ```
 
+If you want to run it as a SystemD service you can check the content of
+[shelly-ht-action-prometheus.service](./systemd/shelly-ht-action-prometheus.service).
+
 It is recommended to not expose directly the service but to put it behind a reverse proxy, so you can communicate with it
 over HTTPS.
 

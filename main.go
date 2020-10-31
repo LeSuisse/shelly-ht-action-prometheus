@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -65,7 +64,6 @@ func sensorAction(c *gin.Context) {
 		return
 	}
 
-	fmt.Printf("%v%v\n", sensorName, actionParameters)
 	labels := prometheus.Labels{SensorName: sensorName}
 	temperatureSensor.With(labels).Set(actionParameters.Temperature)
 	humiditySensor.With(labels).Set(float64(actionParameters.Humidity))

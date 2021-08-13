@@ -31,7 +31,7 @@ func main() {
 func getEnv(name string) string {
 	value, exist := os.LookupEnv(name)
 	if !exist {
-		log.Fatalf("%s environnement variable is missing\n", value)
+		log.Fatalf("%s environnement variable is missing\n", name)
 	}
 	return value
 }

@@ -8,6 +8,47 @@ builds:
       - linux
       - windows
       - darwin
+    hooks:
+      post:
+        release/sign-bin.sh "{{ .Path }}" "dist/{{ .ProjectName }}_{{ .Version }}_{{ .Target }}.sig"
+
+dockers:
+  - image_templates:
+      - 'ghcr.io/lesuisse/{{ .ProjectName }}:{{ .Version }}-amd64'
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.name={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.source={{ .GitURL }}"
+      - "--platform=linux/amd64"
+    goarch: amd64
+  - image_templates:
+      - 'ghcr.io/lesuisse/{{ .ProjectName }}:{{ .Version }}-arm64'
+    dockerfile: Dockerfile
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.name={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.source={{ .GitURL }}"
+      - "--platform=linux/arm64"
+    goarch: arm64
+docker_manifests:
+  - name_template: 'ghcr.io/lesuisse/{{ .ProjectName }}:{{ .Version }}'
+    image_templates:
+      - 'ghcr.io/lesuisse/{{ .ProjectName }}:{{ .Version }}-amd64'
+      - 'ghcr.io/lesuisse/{{ .ProjectName }}:{{ .Version }}-arm64'
+  - name_template: 'ghcr.io/lesuisse/{{ .ProjectName }}:latest'
+    image_templates:
+      - 'ghcr.io/lesuisse/{{ .ProjectName }}:{{ .Version }}-amd64'
+      - 'ghcr.io/lesuisse/{{ .ProjectName }}:{{ .Version }}-arm64'
+
 archives:
   - replacements:
       darwin: Darwin
@@ -19,3 +60,7 @@ checksum:
   name_template: 'checksums.txt'
 changelog:
   sort: asc
+
+release:
+  extra_files:
+    - glob: dist/*.sig

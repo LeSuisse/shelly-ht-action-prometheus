@@ -11,19 +11,53 @@ possible because the sensor cannot communicate with the MQTT broken over TLS.
 
 Collecting the sensor data via an authenticated action call over HTTPS seemed the easiest, and most secure way. 
 
-## Usage
+## Run it
+
+### With the pre-built binaries
+
+Pre-built binaries are [available in the releases](https://github.com/LeSuisse/shelly-ht-action-prometheus/releases).
+
+You can verify the authenticity of the binaries using [Cosign](https://github.com/sigstore/cosign). To do so,
+download our public key [cosign.pub](./release/cosign.pub) and then:
+
+```
+$> cosign verify-blob -key cosign.pub -signature shelly-ht-action-prometheus_<Version>_<OS>_<Arch>.sig shelly-ht-action-prometheus
+```
 
 The service can be launched like this:
 
 ```
 $> SENSOR_PASSWORD=<passphrase_to_submit_sensor_data> \
-   ADDRESS_METRICS=127.0.0.1:17796 \ # Listen address exposing metrics to scrap with Promethes
+   ADDRESS_METRICS=127.0.0.1:17796 \ # Listen address exposing metrics to scrap with Prometheus
    ADDRESS_SENSOR=127.0.0.1:17795 \ # Listen address for submitting the action call from the sensor
    shelly-ht-action-prometheus
 ```
 
 If you want to run it as a SystemD service you can check the content of
 [shelly-ht-action-prometheus.service](./systemd/shelly-ht-action-prometheus.service).
+
+### With the Docker images
+
+A Docker image is available: [ghcr.io/lesuisse/shelly-ht-action-prometheus](https://github.com/LeSuisse/shelly-ht-action-prometheus/pkgs/container/shelly-ht-action-prometheus).
+
+You can verify the authenticity of the image using [Cosign](https://github.com/sigstore/cosign). To do so,
+download our public key [cosign.pub](./release/cosign.pub) and then:
+
+```
+$> cosign verify -key cosign.pub ghcr.io/lesuisse/shelly-ht-action-prometheus
+```
+
+You need to set the environment variable `SENSOR_PASSWORD` when launching the container, for example with the Docker CLI:
+
+```
+$> docker run --rm -d \
+   -e SENSOR_PASSWORD=<passphrase_to_submit_sensor_data> \
+   -p 127.0.0.1:17796:17796 \ # Listen address exposing metrics to scrap with Prometheus
+   -p 127.0.0.1:17796:17795 \ # Listen address for submitting the action call from the sensor
+   ghcr.io/lesuisse/shelly-ht-action-prometheus
+```
+
+## Usage
 
 It is recommended to not expose directly the service but to put it behind a reverse proxy, so you can communicate with it
 over HTTPS.

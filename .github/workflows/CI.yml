@@ -10,27 +10,24 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Build
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # tag=v3.3.0
+      - uses: cachix/install-nix-action@daddc62a2e67d1decb56e028c9fa68344b9b7c2a # tag=v18
         with:
-          go-version: '^1.16.0'
+          nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v4.1.0
-        with:
-          version: latest
-          args: release --snapshot --rm-dist
+        run: nix develop --command goreleaser release --snapshot --rm-dist
   static_analysis:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Run static analysis and linting
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # tag=v3.3.0
+      - uses: cachix/install-nix-action@daddc62a2e67d1decb56e028c9fa68344b9b7c2a # tag=v18
         with:
-          go-version: '^1.15.0'
+          nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: Go fmt
-        run: diff -u <(echo -n) <(gofmt -d -s *.go gpg/)
+        run: nix develop --command sh -c 'diff -u <(echo -n) <(gofmt -d -s *.go ./)'
       - name: Go vet
-        run: go vet ./...
+        run: nix develop --command go vet ./...

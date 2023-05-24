@@ -14,7 +14,7 @@ jobs:
     name: Build
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # tag=v3.5.2
-      - uses: cachix/install-nix-action@29bd9290ef037a3ecbdafe83cbd2185e9dd0fa0a # tag=v20
+      - uses: cachix/install-nix-action@4b933aa7ebcc94a6174cf1364864e957b4910265 # tag=v21
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: Run GoReleaser
@@ -24,7 +24,7 @@ jobs:
     name: Run static analysis and linting
     steps:
       - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # tag=v3.5.2
-      - uses: cachix/install-nix-action@29bd9290ef037a3ecbdafe83cbd2185e9dd0fa0a # tag=v20
+      - uses: cachix/install-nix-action@4b933aa7ebcc94a6174cf1364864e957b4910265 # tag=v21
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: Go fmt

@@ -1,7 +1,10 @@
-FROM gcr.io/distroless/static-debian10:nonroot
+FROM golang:1.20.4
 
-ENV ADDRESS_METRICS 0.0.0.0:17796
-ENV ADDRESS_SENSOR 0.0.0.0:17795
+WORKDIR /root/
 
-COPY shelly-ht-action-prometheus /
-CMD ["/shelly-ht-action-prometheus"]
+COPY . ./
+
+RUN go get
+RUN go build
+
+CMD ["./shelly-ht-action-prometheus"]

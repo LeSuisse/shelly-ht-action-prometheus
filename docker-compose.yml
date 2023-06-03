@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  shelly_ht_action_prometheus:
+    container_name: shelly_ht_action_prometheus
+    hostname: shelly_ht_action_prometheus
+    build:
+        context: .
+        dockerfile: Dockerfile
+    image: shelly_ht_action_prometheus:latest
+    environment:
+      - SENSOR_PASSWORD=${SENSOR_PASSWORD}
+      - ADDRESS_METRICS=0.0.0.0:17796
+      - ADDRESS_SENSOR=0.0.0.0:17795
+    ports:
+      - 17796:17796
+      - 17795:17795
+    restart: unless-stopped

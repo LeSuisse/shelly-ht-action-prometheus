@@ -1,13 +1,14 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"log"
-	"net/http"
-	"os"
 )
 
 const SensorName = "name"
@@ -31,7 +32,7 @@ func main() {
 func getEnv(name string) string {
 	value, exist := os.LookupEnv(name)
 	if !exist {
-		log.Fatalf("%s environnement variable is missing\n", name)
+		log.Fatalf("%s environment variable is missing\n", name)
 	}
 	return value
 }

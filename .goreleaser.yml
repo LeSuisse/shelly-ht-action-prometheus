@@ -1,6 +1,10 @@
 before:
   hooks:
     - go mod download
+
+gomod:
+  proxy: true
+
 builds:
   - env:
       - CGO_ENABLED=0
@@ -8,6 +12,11 @@ builds:
       - linux
       - windows
       - darwin
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
 
 dockers:
   - image_templates:
@@ -52,12 +61,9 @@ signs:
     cmd: cosign
     args: ["sign-blob", "--bundle", "${signature}", "--yes", "${artifact}"]
     artifacts: all
-
+sboms:
+  - artifacts: binary
 checksum:
   name_template: 'checksums.txt'
 changelog:
   sort: asc
-
-release:
-  extra_files:
-    - glob: dist/*.sig

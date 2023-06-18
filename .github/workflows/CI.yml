@@ -21,7 +21,7 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: Run GoReleaser
-        run: nix develop --command goreleaser release --snapshot --rm-dist
+        run: nix develop --command goreleaser release --snapshot --clean
   static_analysis:
     runs-on: ubuntu-22.04
     name: Run static analysis and linting

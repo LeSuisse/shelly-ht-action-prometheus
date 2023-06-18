@@ -13,27 +13,34 @@ import (
 
 const SensorName = "name"
 
+var DefaultAddressMetrics = ""
+var DefaultAddressSensor = ""
+
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 
 	routerSensor := gin.Default()
-	routerSensor.Use(gin.BasicAuth(gin.Accounts{"sensor": getEnv("SENSOR_PASSWORD")}))
+	routerSensor.Use(gin.BasicAuth(gin.Accounts{"sensor": getEnv("SENSOR_PASSWORD", "")}))
 	routerSensor.GET("/sensors/:sensor_name", sensorAction)
 
 	routerMetrics := gin.Default()
 	routerMetrics.GET("/metrics", promHandler(promhttp.Handler()))
 	go func() {
-		log.Fatal(routerMetrics.Run(getEnv("ADDRESS_METRICS")))
+		log.Fatal(routerMetrics.Run(getEnv("ADDRESS_METRICS", DefaultAddressMetrics)))
 	}()
 
-	log.Fatal(routerSensor.Run(getEnv("ADDRESS_SENSOR")))
+	log.Fatal(routerSensor.Run(getEnv("ADDRESS_SENSOR", DefaultAddressSensor)))
 }
 
-func getEnv(name string) string {
+func getEnv(name string, defaultValue string) string {
 	value, exist := os.LookupEnv(name)
-	if !exist {
-		log.Fatalf("%s environment variable is missing\n", name)
+	if exist {
+		return value
 	}
+	if defaultValue != "" {
+		return defaultValue
+	}
+	log.Fatalf("%s environment variable is missing\n", name)
 	return value
 }
 

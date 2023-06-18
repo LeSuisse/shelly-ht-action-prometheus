@@ -7,32 +7,23 @@ on:
 
 jobs:
   goreleaser:
+    permissions:
+      id-token: write
+      contents: write
+      packages: write
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # tag=v3.5.3
         with:
           fetch-depth: 0
+      - run: git fetch --force --tags
       - uses: cachix/install-nix-action@4b933aa7ebcc94a6174cf1364864e957b4910265 # tag=v21
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
-      - name: Install Cosign private key
-        env:
-          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
-        run: echo "$COSIGN_PRIVATE_KEY" > /dev/shm/cosign_private_key
       - name: Log into ghcr.io
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Run GoReleaser
         run: nix develop --command goreleaser release --snapshot --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-          COSIGN_EXPERIMENTAL: 1
-      - name: Sign Docker images
-        env:
-          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
-          COSIGN_EXPERIMENTAL: 1
-        run: nix develop --command cosign sign -key /dev/shm/cosign_private_key -r ghcr.io/lesuisse/shelly-ht-action-prometheus:latest
-      - name: Remove installed Cosign private key
-        run: rm /dev/shm/cosign_private_key
-        if: ${{ always() }}

@@ -8,9 +8,6 @@ builds:
       - linux
       - windows
       - darwin
-    hooks:
-      post:
-        release/sign-bin.sh "{{ .Path }}" "dist/{{ .ProjectName }}_{{ .Version }}_{{ .Target }}.sig"
 
 dockers:
   - image_templates:
@@ -48,6 +45,13 @@ docker_manifests:
     image_templates:
       - 'ghcr.io/lesuisse/{{ .ProjectName }}:{{ .Version }}-amd64'
       - 'ghcr.io/lesuisse/{{ .ProjectName }}:{{ .Version }}-arm64'
+
+signs:
+  - id: cosign-keyless
+    signature: "${artifact}.bundle"
+    cmd: cosign
+    args: ["sign-blob", "--bundle", "${signature}", "--yes", "${artifact}"]
+    artifacts: all
 
 checksum:
   name_template: 'checksums.txt'

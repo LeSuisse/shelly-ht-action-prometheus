@@ -23,6 +23,8 @@ kos:
     tags:
       - '{{.Version}}'
       - latest
+    ldflags:
+      - -s -w -X main.DefaultAddressMetrics=0.0.0.0:17795 -X main.DefaultAddressSensor=0.0.0.0:17796
     bare: true
     creation_time: '{{ .CommitTimestamp }}'
     ko_data_creation_time: '{{ .CommitTimestamp }}'

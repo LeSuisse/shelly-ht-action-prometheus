@@ -17,11 +17,10 @@ Collecting the sensor data via an authenticated action call over HTTPS seemed th
 
 Pre-built binaries are [available in the releases](https://github.com/LeSuisse/shelly-ht-action-prometheus/releases).
 
-You can verify the authenticity of the binaries using [Cosign](https://github.com/sigstore/cosign). To do so,
-download our public key [cosign.pub](./release/cosign.pub) and then:
+You can verify the authenticity of the binaries using [Cosign](https://github.com/sigstore/cosign).
 
 ```
-$> cosign verify-blob -key cosign.pub -signature shelly-ht-action-prometheus_<Version>_<OS>_<Arch>.sig shelly-ht-action-prometheus
+$> cosign verify-blob shelly-ht-action-prometheus_<Version>_<OS>_<Arch>.tar.gz --bundle shelly-ht-action-prometheus_<Version>_<OS>_<Arch>.tar.gz.bundle --certificate-identity-regexp='https://github.com/LeSuisse/shelly-ht-action-prometheus-test/\.github/workflows/Release\.yml'  --certificate-oidc-issuer='https://token.actions.githubusercontent.com'
 ```
 
 The service can be launched like this:
@@ -40,11 +39,10 @@ If you want to run it as a SystemD service you can check the content of
 
 A Docker image is available: [ghcr.io/lesuisse/shelly-ht-action-prometheus](https://github.com/LeSuisse/shelly-ht-action-prometheus/pkgs/container/shelly-ht-action-prometheus).
 
-You can verify the authenticity of the image using [Cosign](https://github.com/sigstore/cosign). To do so,
-download our public key [cosign.pub](./release/cosign.pub) and then:
+You can verify the authenticity of the image using [Cosign](https://github.com/sigstore/cosign).
 
 ```
-$> cosign verify -key cosign.pub ghcr.io/lesuisse/shelly-ht-action-prometheus
+$> cosign verify ghcr.io/lesuisse/shelly-ht-action-prometheus --certificate-identity-regexp='https://github.com/LeSuisse/shelly-ht-action-prometheus-test/\.github/workflows/Release\.yml'  --certificate-oidc-issuer='https://token.actions.githubusercontent.com'
 ```
 
 You need to set the environment variable `SENSOR_PASSWORD` when launching the container, for example with the Docker CLI:

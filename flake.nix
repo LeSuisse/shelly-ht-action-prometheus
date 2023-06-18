@@ -11,6 +11,7 @@
             pkgs.go
             pkgs.cosign
             pkgs.goreleaser
+            pkgs.syft
           ];
         };
       }

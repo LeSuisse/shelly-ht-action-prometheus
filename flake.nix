@@ -12,6 +12,7 @@
             pkgs.cosign
             pkgs.goreleaser
             pkgs.syft
+            pkgs.golangci-lint
           ];
         };
       }

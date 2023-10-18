@@ -16,7 +16,7 @@ jobs:
       contents: read
     name: Build
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # tag=v4.1.0
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # tag=v4.1.1
       - uses: cachix/install-nix-action@6a9a9e84a173d90b3ffb42c5ddaf9ea033fad011 # tag=v23
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Run static analysis and linting
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # tag=v4.1.0
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # tag=v4.1.1
       - uses: cachix/install-nix-action@6a9a9e84a173d90b3ffb42c5ddaf9ea033fad011 # tag=v23
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable

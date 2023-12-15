@@ -36,7 +36,7 @@ kos:
 docker_signs:
   - artifacts: manifests
     cmd: cosign
-    args: ["sign", "${artifact}@${digest}", "--yes"]
+    args: ["sign", "${artifact}", "--yes"]
 
 signs:
   - id: cosign-keyless

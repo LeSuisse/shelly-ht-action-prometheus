@@ -17,7 +17,7 @@ jobs:
     name: Build
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # tag=v4.1.1
-      - uses: cachix/install-nix-action@6004951b182f8860210c8d6f0d808ec5b1a33d28 # tag=v25
+      - uses: cachix/install-nix-action@8887e596b4ee1134dae06b98d573bd674693f47c # tag=v26
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: Run GoReleaser
@@ -27,7 +27,7 @@ jobs:
     name: Run static analysis and linting
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # tag=v4.1.1
-      - uses: cachix/install-nix-action@6004951b182f8860210c8d6f0d808ec5b1a33d28 # tag=v25
+      - uses: cachix/install-nix-action@8887e596b4ee1134dae06b98d573bd674693f47c # tag=v26
         with:
           nix_path: nixpkgs=channel:nixpkgs-unstable
       - name: golangci-lint

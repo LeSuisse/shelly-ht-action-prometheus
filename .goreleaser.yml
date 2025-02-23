@@ -1,3 +1,5 @@
+version: 2
+
 before:
   hooks:
     - go mod download
@@ -19,7 +21,8 @@ builds:
       - -s -w
 
 kos:
-  - repository: 'ghcr.io/lesuisse/shelly-ht-action-prometheus'
+  - repositories:
+      - 'ghcr.io/lesuisse/shelly-ht-action-prometheus'
     tags:
       - '{{.Version}}'
       - latest

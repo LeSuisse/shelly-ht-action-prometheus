@@ -1,6 +1,6 @@
 module github.com/LeSuisse/shelly-ht-action-prometheus
 
-go 1.21
+go 1.23.5
 
 require (
 	github.com/gin-gonic/gin v1.10.0

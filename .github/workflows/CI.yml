@@ -10,10 +10,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       id-token: write
-      contents: read
     name: Build
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # tag=v4.2.2
@@ -23,7 +22,7 @@ jobs:
       - name: Run GoReleaser
         run: nix develop --command goreleaser release --snapshot --clean
   static_analysis:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: Run static analysis and linting
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # tag=v4.2.2

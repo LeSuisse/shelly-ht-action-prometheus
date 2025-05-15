@@ -11,6 +11,7 @@ jobs:
       id-token: write
       contents: write
       packages: write
+      attestations: write
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -31,3 +32,6 @@ jobs:
         run: nix develop --command goreleaser release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # tag=v2.3.0
+        with:
+          subject-checksums: ./dist/checksums.txt

@@ -27,8 +27,8 @@ The service can be launched like this:
 
 ```
 $> SENSOR_PASSWORD=<passphrase_to_submit_sensor_data> \
-   ADDRESS_METRICS=127.0.0.1:17796 \ # Listen address exposing metrics to scrap with Prometheus
-   ADDRESS_SENSOR=127.0.0.1:17795 \ # Listen address for submitting the action call from the sensor
+   ADDRESS_METRICS=127.0.0.1:17795 \ # Listen address exposing metrics to scrap with Prometheus
+   ADDRESS_SENSOR=127.0.0.1:17796 \ # Listen address for submitting the action call from the sensor
    shelly-ht-action-prometheus
 ```
 
@@ -50,8 +50,8 @@ You need to set the environment variable `SENSOR_PASSWORD` when launching the co
 ```
 $> docker run --rm -d \
    -e SENSOR_PASSWORD=<passphrase_to_submit_sensor_data> \
-   -p 127.0.0.1:17796:17796 \ # Listen address exposing metrics to scrape with Prometheus
-   -p 127.0.0.1:17795:17795 \ # Listen address for submitting the action call from the sensor
+   -p 127.0.0.1:17795:17795 \ # Listen address exposing metrics to scrape with Prometheus
+   -p 127.0.0.1:17796:17796 \ # Listen address for submitting the action call from the sensor
    ghcr.io/lesuisse/shelly-ht-action-prometheus
 ```
 
